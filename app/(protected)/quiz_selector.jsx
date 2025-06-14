@@ -27,7 +27,7 @@ export default function QuizSelector() {
   return (
     <View style={styles.pageContainer}>
       <View style={styles.linksContainer}>
-        <TouchableOpacity onPress={() => router.push("/results")}>
+        <TouchableOpacity onPress={() => router.push("/results_page")}>
           <Text style={styles.link}>Resultados</Text>
         </TouchableOpacity>
       </View>
