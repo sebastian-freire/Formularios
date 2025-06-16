@@ -3,8 +3,7 @@ import { useState } from "react";
 export default function useFetchData() {
   const [quiz, setQuiz] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const URL =
-    "https://45a9-2800-a4-15bf-9900-852b-2f8f-a735-9b1.ngrok-free.app";
+  const URL = "https://8d93-190-64-49-12.ngrok-free.app";
 
   const quizFetch = async () => {
     try {

@@ -13,22 +13,43 @@ import { useUser } from "../context/userContext";
 export default function LoginPage() {
   const router = useRouter();
   const { login, logout, isLoggedIn } = useUser();
+  const [nuevoLogin, setNuevoLogin] = useState("");
+
+  const handleLoginClick = () => {
+    if (nuevoLogin.trim() === "") {
+      return;
+    }
+    login(nuevoLogin);
+    setNuevoLogin("");
+    router.push("/quiz_selector");
+  };
+
+  const handleLogoutClick = () => {
+    logout();
+  };
 
   return (
     <View style={styles.container}>
       {isLoggedIn && (
-        <TouchableOpacity onPress={() => router.push("/quiz_selector")}>
-          <Text style={{ color: "red", marginBottom: 20 }}>
-            Ir a Quiz Selector
-          </Text>
+        <TouchableOpacity style={styles.button} onPress={handleLogoutClick}>
+          <Text style={styles.buttonText}>Cerrar Sesión</Text>
         </TouchableOpacity>
       )}
 
-      <TextInput placeholder="Ingresa tu nombre" style={styles.input} />
+      {!isLoggedIn && (
+        <>
+          <TextInput
+            placeholder="Ingresa tu nombre"
+            style={styles.input}
+            value={nuevoLogin}
+            onChangeText={setNuevoLogin}
+          />
 
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Iniciar Sesión</Text>
-      </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={handleLoginClick}>
+            <Text style={styles.buttonText}>Iniciar Sesión</Text>
+          </TouchableOpacity>
+        </>
+      )}
     </View>
   );
 }
