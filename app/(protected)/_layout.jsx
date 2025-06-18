@@ -1,30 +1,25 @@
 import { Stack, useRouter } from "expo-router";
-import { useEffect } from "react";
-import { useUser } from "../../context/userContext";
 
 export default function ProtectedLayout() {
   const router = useRouter();
-  const { isLoggedIn } = useUser();
-
-  // useEffect(() => {
-  //   if (!isLoggedIn) {
-  //     router.replace("/login_page");
-  //   }
-  // }, [isLoggedIn]);
-  //FIX ME FUNCIONA PERO DESCOMENTAR PARA QUE NO REDIRECCIONE A LOGIN
-
   return (
     <Stack screenOptions={genericHeaderOptions}>
       <Stack.Screen
         name="quiz_selector"
         options={{
-          title: "Selector de quiz"
+          title: "Quiz Selector"
         }}
       />
       <Stack.Screen
         name="quiz/[id_quiz]"
         options={{
-          title: "Prueba"
+          title: "Quiz"
+        }}
+      />
+      <Stack.Screen
+        name="quiz/[id_quiz]/question/[id_question]"
+        options={{
+          title: "Question"
         }}
       />
     </Stack>

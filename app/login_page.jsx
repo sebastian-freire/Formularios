@@ -26,6 +26,8 @@ export default function LoginPage() {
 
   const handleLogoutClick = () => {
     logout();
+    router.replace("/login_page"); //Con esto no pueden volver a la tab anterior despues de desloguearse
+    setNuevoLogin(""); // Limpiar el campo de entrada al cerrar sesión
   };
 
   return (

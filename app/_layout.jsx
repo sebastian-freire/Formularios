@@ -1,32 +1,50 @@
 import { Tabs } from "expo-router";
-import { UserProvider } from "../context/userContext";
+import { UserProvider, useUser } from "../context/userContext";
 import { Ionicons } from "@expo/vector-icons";
+import { TouchableOpacity, Text } from "react-native";
 
+//bar
+function TabsWithAuth() {
+  const { isLoggedIn } = useUser();
+
+  return (
+    <Tabs screenOptions={genericHeaderOptions} initialRouteName="login_page">
+      <Tabs.Screen
+        name="(protected)"
+        options={{
+          headerShown: false,
+          title: "Quizes",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="book-outline" size={size} color={color} />
+          ),
+          tabBarButton: (props) => (
+            <TouchableOpacity
+              {...props}
+              disabled={!isLoggedIn}
+              style={[props.style, { opacity: isLoggedIn ? 1 : 0.5 }]}
+            />
+          )
+        }}
+      />
+      <Tabs.Screen
+        name="login_page"
+        options={{
+          headerShown: true,
+          title: "Iniciar sesión",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="log-in-outline" size={size} color={color} />
+          )
+        }}
+      />
+    </Tabs>
+  );
+}
+
+// Root layout component
 export default function RootLayout() {
   return (
     <UserProvider>
-      <Tabs screenOptions={genericHeaderOptions}>
-        <Tabs.Screen
-          name="(protected)"
-          options={{
-            headerShown: false,
-            title: "Quizes",
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons name="book-outline" size={size} color={color} />
-            )
-          }}
-        />
-        <Tabs.Screen
-          name="login_page"
-          options={{
-            headerShown: true,
-            title: "Iniciar sesión",
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons name="log-in-outline" size={size} color={color} />
-            )
-          }}
-        />
-      </Tabs>
+      <TabsWithAuth />
     </UserProvider>
   );
 }

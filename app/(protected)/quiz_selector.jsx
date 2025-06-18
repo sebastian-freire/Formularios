@@ -9,17 +9,18 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import QuizSelectorCard from "../../components/quiz_selector_card";
-import useFetchData from "../../hooks/login/useFetchData";
+import useFetchData from "../../hooks/fetch_quiz_selector";
 
 export default function QuizSelector() {
   const router = useRouter();
-  const { quiz, setQuiz, isLoading, quizFetch } = useFetchData();
+  const { quiz, setQuiz, isLoading, setIsLoading, quizFetch } = useFetchData();
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       const data = await quizFetch();
       setQuiz(data);
-      setLoading(false);
+      setIsLoading(false);
     };
     fetchData();
   }, []);
@@ -27,12 +28,17 @@ export default function QuizSelector() {
   return (
     <View style={styles.pageContainer}>
       <View style={styles.linksContainer}>
-        <TouchableOpacity onPress={() => router.push("/results_page")}>
-          <Text style={styles.link}>Resultados</Text>
+        <TouchableOpacity
+          style={styles.link}
+          onPress={() => router.push("/results_page")}
+        >
+          <Text style={styles.linkText}>Resultados</Text>
         </TouchableOpacity>
       </View>
 
-      {!isLoading && (
+      {isLoading ? (
+        <ActivityIndicator size="large" color="#4e342e" />
+      ) : (
         <FlatList
           data={quiz}
           keyExtractor={(item) => item.id.toString()}
@@ -51,24 +57,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 24
   },
-  header: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#4e342e",
-    marginBottom: 16,
-    textAlign: "center"
-  },
   linksContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginBottom: 16,
-    gap: 16
+    alignItems: "center",
+    marginBottom: 24
   },
   link: {
-    color: "#5b8bd6",
-    fontSize: 16,
-    textDecorationLine: "underline",
-    marginHorizontal: 8
+    marginHorizontal: 8,
+    backgroundColor: "orange",
+    padding: 8,
+    borderRadius: 8,
+    elevation: 2
+  },
+  linkText: {
+    color: "#fff",
+    fontWeight: "bold"
   },
   listContent: {
     paddingBottom: 16
